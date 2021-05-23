@@ -1,3 +1,109 @@
+import { AppError } from '@shared/Errors/AppError';
+import { FakeCepProvider } from '../providers/CepProvider/fakes/FakeCepProvider';
+import { FakeAddressesRepository } from '../repositories/fakes/FakeAddressesRepository';
+import { FakeDoctorsRepository } from '../repositories/fakes/FakeDoctorsRepository';
+import { FakeSpecialtiesRepository } from '../repositories/fakes/FakeSpecialtiesRepository';
+import { CreateDoctorService } from './CreateDoctorService';
+
+const specialtySeeds = ['Alergologia', 'Angiologia'];
+
+let doctorsRepository: FakeDoctorsRepository;
+let addressesRepository: FakeAddressesRepository;
+let cepProvider: FakeCepProvider;
+let specialtiesRepository: FakeSpecialtiesRepository;
+
+let createDoctorService: CreateDoctorService;
+
 describe('Create Doctor', () => {
-  it('should sum 1 + 1', () => expect(1 + 1).toEqual(2));
+  beforeAll(() => {
+    specialtiesRepository = new FakeSpecialtiesRepository(specialtySeeds);
+  });
+
+  beforeEach(() => {
+    doctorsRepository = new FakeDoctorsRepository();
+    addressesRepository = new FakeAddressesRepository();
+    cepProvider = new FakeCepProvider();
+
+    createDoctorService = new CreateDoctorService(
+      doctorsRepository,
+      addressesRepository,
+      specialtiesRepository,
+      cepProvider,
+    );
+  });
+
+  it('Should be able to create a new doctor', async () => {
+    const doctor = await createDoctorService.execute({
+      name: 'Drauzio Varéla',
+      crm: '12.345.67',
+      landline_phone: '(12)3456-7590',
+      cell_phone: '(12)93456-7590',
+      cep: '12345-67',
+      specialties: specialtySeeds,
+    });
+
+    expect(doctor).toHaveProperty('id');
+    expect(doctor.address).toHaveProperty('id');
+    doctor.specialties.forEach(specialty => {
+      expect(specialty).toHaveProperty('id');
+    });
+  });
+
+  it('Should fail if CRM is already in use', async () => {
+    const specialties = await specialtiesRepository.findByNames(specialtySeeds);
+
+    const address = await addressesRepository.create({
+      cep: '12345-67',
+      city: 'city',
+      neighborhood: 'neighborhood',
+      state: 'ST',
+      street: 'street',
+    });
+
+    await doctorsRepository.create({
+      name: 'Drauzio Varéla',
+      crm: '12.345.67',
+      landline_phone: '(12)3456-7590',
+      cell_phone: '(12)93456-7590',
+      address,
+      specialties,
+    });
+
+    await expect(
+      createDoctorService.execute({
+        name: 'Drauzio Varéla Junior',
+        crm: '12.345.67',
+        landline_phone: '(12)3456-7590',
+        cell_phone: '(12)93456-7590',
+        cep: '12345-67',
+        specialties: specialtySeeds,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Should fail if specialty does not exist', async () => {
+    await expect(
+      createDoctorService.execute({
+        name: 'Drauzio Varéla Junior',
+        crm: '12.345.67',
+        landline_phone: '(12)3456-7590',
+        cell_phone: '(12)93456-7590',
+        cep: '12345-67',
+        specialties: ['non-existent-specialty', 'non-existent-specialty2'],
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Should fail if less than 2 specialties were provided', async () => {
+    await expect(
+      createDoctorService.execute({
+        name: 'Drauzio Varéla Junior',
+        crm: '12.345.67',
+        landline_phone: '(12)3456-7590',
+        cell_phone: '(12)93456-7590',
+        cep: '12345-67',
+        specialties: [specialtySeeds[1]],
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
