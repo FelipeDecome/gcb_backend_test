@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsnd -r tsconfig-paths/register --inspect --transpile-only --ignore node_modules src/shared/infra/http/server.ts"
-
   },
   "dependencies": {
     "cors": "^2.8.5",
