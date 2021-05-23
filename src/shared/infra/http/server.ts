@@ -1,6 +1,10 @@
-import { app } from "./app";
+import { app } from './app';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3333;
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-app.listen(PORT, () => isDevelopment && console.log(`🚀 Server listening on port: ${PORT}`));
+app.listen(
+  PORT,
+  // eslint-disable-next-line no-console
+  () => isDevelopment && console.log(`🚀 Server listening on port: ${PORT}`),
+);
