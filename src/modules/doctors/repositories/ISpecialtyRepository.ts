@@ -1,7 +1,8 @@
 import { Specialty } from '../infra/typeorm/entities/Specialty';
 
 interface ISpecialtiesRepository {
-  findByNames(names: string[]): Promise<Specialty[]>;
+  findByIds(ids: string[]): Promise<Specialty[]>;
+  index(): Promise<Specialty[]>;
 }
 
 export { ISpecialtiesRepository };

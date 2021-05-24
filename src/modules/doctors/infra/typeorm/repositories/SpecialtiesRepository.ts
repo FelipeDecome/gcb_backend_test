@@ -9,10 +9,14 @@ class SpecialtiesRepository implements ISpecialtiesRepository {
     this.ormRepository = getRepository(Specialty);
   }
 
-  public async findByNames(names: string[]): Promise<Specialty[]> {
+  public async findByIds(ids: string[]): Promise<Specialty[]> {
     return this.ormRepository.find({
-      where: In(names),
+      where: { id: In(ids) },
     });
+  }
+
+  public async index(): Promise<Specialty[]> {
+    return this.ormRepository.find();
   }
 }
 

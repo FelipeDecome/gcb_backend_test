@@ -50,7 +50,7 @@ class CreateDoctorService {
       });
     }
 
-    const findSpecialties = await this.specialtiesRepository.findByNames(
+    const findSpecialties = await this.specialtiesRepository.findByIds(
       specialties,
     );
 
@@ -60,17 +60,17 @@ class CreateDoctorService {
     if (findSpecialties.length < 2) {
       const specialtiesNotFound: string[] = [];
 
-      specialties.forEach(specialtyName => {
-        const findName = findSpecialties.find(
-          specialty => specialty.name === specialtyName,
+      specialties.forEach(specialtyId => {
+        const findId = findSpecialties.find(
+          specialty => specialty.id === specialtyId,
         );
 
-        if (!findName) specialtiesNotFound.push(specialtyName);
+        if (!findId) specialtiesNotFound.push(specialtyId);
       });
 
       if (specialtiesNotFound.length > 0)
         throw new AppError(
-          `Specialties not found: '${specialtiesNotFound.join(', ')}'`,
+          `Specialties ids not found: '${specialtiesNotFound.join(', ')}'`,
         );
     }
 

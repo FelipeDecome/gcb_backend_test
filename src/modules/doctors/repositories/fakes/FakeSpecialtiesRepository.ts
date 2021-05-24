@@ -19,17 +19,12 @@ class FakeSpecialtiesRepository implements ISpecialtiesRepository {
     });
   }
 
-  public async findByNames(names: string[]): Promise<Specialty[]> {
-    const specialties = [] as Specialty[];
-    names.forEach(name => {
-      const findSpecialty = this.repository.find(
-        specialty => specialty.name === name,
-      );
+  public async findByIds(ids: string[]): Promise<Specialty[]> {
+    return this.repository.filter(specialty => ids.includes(specialty.id));
+  }
 
-      if (findSpecialty) specialties.push(findSpecialty);
-    });
-
-    return specialties;
+  public async index(): Promise<Specialty[]> {
+    return [...this.repository];
   }
 }
 

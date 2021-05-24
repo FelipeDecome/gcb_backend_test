@@ -1,5 +1,6 @@
 import { AppError } from '@shared/Errors/AppError';
 
+import { Specialty } from '../infra/typeorm/entities/Specialty';
 import { FakeCepProvider } from '../providers/CepProvider/fakes/FakeCepProvider';
 import { FakeAddressesRepository } from '../repositories/fakes/FakeAddressesRepository';
 import { FakeDoctorsRepository } from '../repositories/fakes/FakeDoctorsRepository';
@@ -15,9 +16,13 @@ let specialtiesRepository: FakeSpecialtiesRepository;
 
 let createDoctorService: CreateDoctorService;
 
+let specialties: Specialty[];
+
 describe('Create Doctor', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     specialtiesRepository = new FakeSpecialtiesRepository(specialtySeeds);
+
+    specialties = await specialtiesRepository.index();
   });
 
   beforeEach(() => {
@@ -40,7 +45,7 @@ describe('Create Doctor', () => {
       landline_phone: '(12)3456-7590',
       cell_phone: '(12)93456-7590',
       cep: '12345-67',
-      specialties: specialtySeeds,
+      specialties: [specialties[0].id, specialties[1].id],
     });
 
     expect(doctor).toHaveProperty('id');
@@ -51,8 +56,6 @@ describe('Create Doctor', () => {
   });
 
   it('Should fail if CRM is already in use', async () => {
-    const specialties = await specialtiesRepository.findByNames(specialtySeeds);
-
     const address = await addressesRepository.create({
       cep: '12345-67',
       city: 'city',
@@ -77,7 +80,7 @@ describe('Create Doctor', () => {
         landline_phone: '(12)3456-7590',
         cell_phone: '(12)93456-7590',
         cep: '12345-67',
-        specialties: specialtySeeds,
+        specialties: [specialties[0].id, specialties[1].id],
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -103,7 +106,7 @@ describe('Create Doctor', () => {
         landline_phone: '(12)3456-7590',
         cell_phone: '(12)93456-7590',
         cep: '12345-67',
-        specialties: [specialtySeeds[1]],
+        specialties: [specialties[1].id],
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
