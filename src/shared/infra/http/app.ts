@@ -1,9 +1,11 @@
-import express from 'express';
 import 'express-async-errors';
-import cors from 'cors';
-import { routes } from './routes';
-import { appErrorHandlingMiddleware } from './middleware/appErrorHandlingMiddleware';
 import '../typeorm';
+
+import cors from 'cors';
+import express from 'express';
+
+import { appErrorHandlingMiddleware } from './middleware/appErrorHandlingMiddleware';
+import { routes } from './routes';
 
 const app = express();
 
