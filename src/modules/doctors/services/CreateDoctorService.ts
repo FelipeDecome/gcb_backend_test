@@ -1,4 +1,5 @@
 import { AppError } from '@shared/Errors/AppError';
+
 import { Doctor } from '../infra/typeorm/entities/Doctor';
 import { FakeCepProvider } from '../providers/CepProvider/fakes/FakeCepProvider';
 import { IAddressesRepository } from '../repositories/IAddressesRepository';

@@ -16,12 +16,15 @@
     },
     "plugins": [
         "@typescript-eslint",
+        "simple-import-sort",
         "prettier"
     ],
     "rules": {
       "class-methods-use-this": "off",
       "camelcase": "off",
       "no-useless-constructor": "off",
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

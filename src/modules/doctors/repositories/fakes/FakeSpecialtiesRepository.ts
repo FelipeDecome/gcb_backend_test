@@ -1,4 +1,5 @@
 import { Specialty } from '@modules/doctors/infra/typeorm/entities/Specialty';
+
 import { ISpecialtiesRepository } from '../ISpecialtyRepository';
 
 class FakeSpecialtiesRepository implements ISpecialtiesRepository {

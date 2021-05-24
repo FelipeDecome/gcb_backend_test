@@ -1,5 +1,6 @@
 import { ICreateDoctorsDTO } from '@modules/doctors/dtos/ICreateDoctorsDTO';
 import { Doctor } from '@modules/doctors/infra/typeorm/entities/Doctor';
+
 import { IDoctorsRepository } from '../IDoctorsRepository';
 
 class FakeDoctorsRepository implements IDoctorsRepository {

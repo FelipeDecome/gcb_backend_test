@@ -1,5 +1,6 @@
 import { ICreateAddressDTO } from '@modules/doctors/dtos/ICreateAddressDTO';
 import { Address } from '@modules/doctors/infra/typeorm/entities/Address';
+
 import { IAddressesRepository } from '../IAddressesRepository';
 
 class FakeAddressesRepository implements IAddressesRepository {

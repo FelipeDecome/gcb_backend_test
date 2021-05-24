@@ -1,4 +1,5 @@
 import { AppError } from '@shared/Errors/AppError';
+
 import { FakeCepProvider } from '../providers/CepProvider/fakes/FakeCepProvider';
 import { FakeAddressesRepository } from '../repositories/fakes/FakeAddressesRepository';
 import { FakeDoctorsRepository } from '../repositories/fakes/FakeDoctorsRepository';
