@@ -2,7 +2,6 @@ import { AppError } from '@shared/Errors/AppError';
 
 import { Doctor } from '../infra/typeorm/entities/Doctor';
 import { FakeCepProvider } from '../providers/CepProvider/fakes/FakeCepProvider';
-import { IAddressesRepository } from '../repositories/IAddressesRepository';
 import { IDoctorsRepository } from '../repositories/IDoctorsRepository';
 import { ISpecialtiesRepository } from '../repositories/ISpecialtyRepository';
 
@@ -15,14 +14,9 @@ interface IRequest {
   specialties: string[];
 }
 
-/* const viaCepResponse = await fetch(
-    `https://viacep.com.br/ws/${cep}/json/`,
-  ); */
-
 class CreateDoctorService {
   constructor(
     private doctorsRepository: IDoctorsRepository,
-    private addressesRepository: IAddressesRepository,
     private specialtiesRepository: ISpecialtiesRepository,
     private cepProvider: FakeCepProvider,
   ) {}
@@ -39,16 +33,7 @@ class CreateDoctorService {
 
     if (crmAlreadyInUse) throw new AppError('CRM already in use');
 
-    let address = await this.addressesRepository.findByCep(cep);
-
-    if (!address) {
-      const { cep: _, ...rest } = await this.cepProvider.find(cep);
-
-      address = await this.addressesRepository.create({
-        cep,
-        ...rest,
-      });
-    }
+    const address = await this.cepProvider.find(cep);
 
     const findSpecialties = await this.specialtiesRepository.findByIds(
       specialties,

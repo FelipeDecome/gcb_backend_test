@@ -1,7 +1,6 @@
 import { Specialty } from '../infra/typeorm/entities/Specialty';
 
 interface IAddress {
-  id?: string;
   cep: string;
   street: string;
   neighborhood: string;

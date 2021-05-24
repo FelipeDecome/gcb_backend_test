@@ -20,11 +20,12 @@ export default class CreateSpecialtiesSeed1621816537422
       name: specialtiesName,
     }));
 
-    const specialtyRepository = queryRunner.connection.getRepository(Specialty);
+    const specialties = queryRunner.manager.create(
+      Specialty,
+      parsedSpecialties,
+    );
 
-    const specialties = specialtyRepository.create(parsedSpecialties);
-
-    await specialtyRepository.save(specialties);
+    await queryRunner.manager.save(specialties);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

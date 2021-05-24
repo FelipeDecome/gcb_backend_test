@@ -53,7 +53,7 @@ export default class CreateDoctors1621804640036 implements MigrationInterface {
             columnNames: ['address_id'],
             referencedColumnNames: ['id'],
             referencedTableName: 'addresses',
-            onDelete: 'SET NULL',
+            onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
           },
         ],

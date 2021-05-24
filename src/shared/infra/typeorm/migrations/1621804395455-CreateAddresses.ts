@@ -16,15 +16,16 @@ export default class CreateAddresses1621804395455
           {
             name: 'cep',
             type: 'varchar',
-            isUnique: true,
           },
           {
             name: 'street',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'neighborhood',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'city',
@@ -43,6 +44,11 @@ export default class CreateAddresses1621804395455
             name: 'updated_at',
             type: 'timestamp',
             default: 'now()',
+          },
+          {
+            name: 'removed_at',
+            type: 'timestamp',
+            isNullable: true,
           },
         ],
       }),

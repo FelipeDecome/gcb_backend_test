@@ -1,13 +1,14 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
-@Entity('adresses')
+@Entity('addresses')
 class Address {
   @PrimaryColumn('uuid')
   id: string;
@@ -32,6 +33,9 @@ class Address {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @DeleteDateColumn()
+  removed_at?: Date;
 
   constructor() {
     if (!this.id) this.id = uuid();

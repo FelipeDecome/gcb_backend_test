@@ -9,27 +9,12 @@ export default class CreateDoctorsSpecialties1621805485825
         name: 'doctors_specialties',
         columns: [
           {
-            name: 'id',
-            type: 'uuid',
-            isPrimary: true,
-          },
-          {
             name: 'doctor_id',
             type: 'uuid',
           },
           {
             name: 'specialty_id',
             type: 'uuid',
-          },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
           },
         ],
         foreignKeys: [

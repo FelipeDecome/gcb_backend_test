@@ -2,7 +2,6 @@ import { AppError } from '@shared/Errors/AppError';
 
 import { Specialty } from '../infra/typeorm/entities/Specialty';
 import { FakeCepProvider } from '../providers/CepProvider/fakes/FakeCepProvider';
-import { FakeAddressesRepository } from '../repositories/fakes/FakeAddressesRepository';
 import { FakeDoctorsRepository } from '../repositories/fakes/FakeDoctorsRepository';
 import { FakeSpecialtiesRepository } from '../repositories/fakes/FakeSpecialtiesRepository';
 import { CreateDoctorService } from './CreateDoctorService';
@@ -10,7 +9,6 @@ import { CreateDoctorService } from './CreateDoctorService';
 const specialtySeeds = ['Alergologia', 'Angiologia'];
 
 let doctorsRepository: FakeDoctorsRepository;
-let addressesRepository: FakeAddressesRepository;
 let cepProvider: FakeCepProvider;
 let specialtiesRepository: FakeSpecialtiesRepository;
 
@@ -27,12 +25,10 @@ describe('Create Doctor', () => {
 
   beforeEach(() => {
     doctorsRepository = new FakeDoctorsRepository();
-    addressesRepository = new FakeAddressesRepository();
     cepProvider = new FakeCepProvider();
 
     createDoctorService = new CreateDoctorService(
       doctorsRepository,
-      addressesRepository,
       specialtiesRepository,
       cepProvider,
     );
@@ -49,20 +45,18 @@ describe('Create Doctor', () => {
     });
 
     expect(doctor).toHaveProperty('id');
-    expect(doctor.address).toHaveProperty('id');
-    doctor.specialties.forEach(specialty => {
-      expect(specialty).toHaveProperty('id');
-    });
+    expect(doctor.address.cep).toEqual('12345-67');
+    expect(doctor.specialties).toHaveLength(2);
   });
 
   it('Should fail if CRM is already in use', async () => {
-    const address = await addressesRepository.create({
+    const address = {
       cep: '12345-67',
       city: 'city',
       neighborhood: 'neighborhood',
       state: 'ST',
       street: 'street',
-    });
+    };
 
     await doctorsRepository.create({
       name: 'Drauzio Varéla',

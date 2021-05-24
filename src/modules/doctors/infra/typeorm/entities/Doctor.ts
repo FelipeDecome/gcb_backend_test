@@ -4,8 +4,9 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
-  ManyToOne,
+  OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -34,11 +35,16 @@ class Doctor {
   @Column('uuid')
   address_id: string;
 
-  @ManyToOne(() => Address)
+  @OneToOne(() => Address, { cascade: ['insert', 'soft-remove', 'recover'] })
+  @JoinColumn({ name: 'address_id', referencedColumnName: 'id' })
   address: Address;
 
   @ManyToMany(() => Specialty)
-  @JoinColumn()
+  @JoinTable({
+    name: 'doctors_specialties',
+    joinColumn: { name: 'doctor_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'specialty_id', referencedColumnName: 'id' },
+  })
   specialties: Specialty[];
 
   @CreateDateColumn()
