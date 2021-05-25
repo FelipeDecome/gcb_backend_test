@@ -51,27 +51,28 @@ class DoctorsRepository implements IDoctorsRepository {
 
     Object.entries(parsedData).forEach(([k, v]) => {
       Object.assign(parsedData, {
-        [k]: `${v}%`,
+        [k]: `${v?.toLowerCase()}%`,
       });
     });
 
     parsedAddressDataEntries.forEach(([k, v]) => {
       Object.assign(parsedAddressData, {
-        [k]: `${v}%`,
+        [k]: `${v?.toLowerCase()}%`,
       });
     });
 
     return baseQuery
       .where(
         Object.keys(parsedData)
-          .map(k => `doctor.${k} LIKE :${k}`)
+          .map(k => `LOWER(doctor.${k}) LIKE :${k}`)
           .concat(
-            Object.keys(parsedAddressData).map(k => `address.${k} LIKE :${k}`),
+            Object.keys(parsedAddressData).map(
+              k => `LOWER(address.${k}) LIKE :${k}`,
+            ),
           )
           .join(' AND '),
         { ...parsedData, ...parsedAddressData },
       )
-
       .getMany();
   }
 }
