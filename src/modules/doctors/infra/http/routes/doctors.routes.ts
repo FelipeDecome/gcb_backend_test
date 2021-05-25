@@ -28,4 +28,6 @@ doctorsRoutes.post(
   doctorsController.create,
 );
 
+doctorsRoutes.get('/', doctorsController.find);
+
 export { doctorsRoutes };

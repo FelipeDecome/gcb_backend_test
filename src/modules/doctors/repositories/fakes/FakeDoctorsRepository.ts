@@ -1,4 +1,5 @@
 import { ICreateDoctorsDTO } from '@modules/doctors/dtos/ICreateDoctorsDTO';
+import { IFindDoctorsDTO } from '@modules/doctors/dtos/IFindDoctorsDTO';
 import { Doctor } from '@modules/doctors/infra/typeorm/entities/Doctor';
 
 import { IDoctorsRepository } from '../IDoctorsRepository';
@@ -18,6 +19,10 @@ class FakeDoctorsRepository implements IDoctorsRepository {
 
   public async findByCRM(crm: string): Promise<Doctor | undefined> {
     return this.repository.find(doctor => doctor.crm === crm);
+  }
+
+  public async find(_: IFindDoctorsDTO): Promise<Doctor[]> {
+    return [...this.repository];
   }
 }
 
