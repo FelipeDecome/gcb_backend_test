@@ -5,10 +5,10 @@ A proposta do teste era construir uma API para gerenciar médicos, com cadastro,
 ## Rodando a aplicação
 *Certifique-se de configurar o banco de dados antes de rodar os comandos*
 
-```bash
-  yarn typeorm:migrate
+```console
+  $ yarn typeorm:migrate
 
-  yarn dev:server
+  $ yarn dev:server
 ```
 
 ## Ferramentas utilizadas
