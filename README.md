@@ -21,3 +21,7 @@ A proposta do teste era construir uma API para gerenciar médicos, com cadastro,
  - Jest
  - Postgres
  - Tsyringe para injeção de dependência.
+
+## Configuração do insomnia
+
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Doctors%20Management&uri=https%3A%2F%2Fgithub.com%2FFelipeDecome%2Fgcb_backend_test%2Fblob%2Fmaster%2Fdocs%2FInsomnia_2021-05-26.json)
