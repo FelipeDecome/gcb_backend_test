@@ -1,3 +1,5 @@
+import { inject, injectable } from 'tsyringe';
+
 import { Doctor } from '../infra/typeorm/entities/Doctor';
 import { IDoctorsRepository } from '../repositories/IDoctorsRepository';
 
@@ -14,8 +16,12 @@ interface IRequest {
   state?: string;
 }
 
+@injectable()
 class FindDoctorsService {
-  constructor(private doctorsRepository: IDoctorsRepository) {}
+  constructor(
+    @inject('DoctorsRepository')
+    private doctorsRepository: IDoctorsRepository,
+  ) {}
 
   public async execute(data: IRequest): Promise<Doctor[]> {
     return this.doctorsRepository.find(data);

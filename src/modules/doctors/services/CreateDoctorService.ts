@@ -1,4 +1,5 @@
 import { AppError } from '@shared/Errors/AppError';
+import { inject, injectable } from 'tsyringe';
 
 import { Doctor } from '../infra/typeorm/entities/Doctor';
 import { FakeCepProvider } from '../providers/CepProvider/fakes/FakeCepProvider';
@@ -14,10 +15,16 @@ interface IRequest {
   specialties: string[];
 }
 
+@injectable()
 class CreateDoctorService {
   constructor(
+    @inject('DoctorsRepository')
     private doctorsRepository: IDoctorsRepository,
+
+    @inject('SpecialtiesRepository')
     private specialtiesRepository: ISpecialtiesRepository,
+
+    @inject('CepProvider')
     private cepProvider: FakeCepProvider,
   ) {}
 

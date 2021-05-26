@@ -1,26 +1,15 @@
-import { ViaCepCepProvider } from '@modules/doctors/providers/CepProvider/implementations/ViaCepCepProvider';
 import { CreateDoctorService } from '@modules/doctors/services/CreateDoctorService';
 import { DeleteDoctorsService } from '@modules/doctors/services/DeleteDoctorService';
 import { FindDoctorsService } from '@modules/doctors/services/FindDoctorsService';
 import { Request, Response } from 'express';
-
-import { DoctorsRepository } from '../../typeorm/repositories/DoctorsRepository';
-import { SpecialtiesRepository } from '../../typeorm/repositories/SpecialtiesRepository';
+import { container } from 'tsyringe';
 
 class DoctorsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, crm, landline_phone, cell_phone, cep, specialties } =
       request.body;
 
-    const doctorsRepository = new DoctorsRepository();
-    const specialtiesRepository = new SpecialtiesRepository();
-    const cepProvider = new ViaCepCepProvider();
-
-    const createDoctorService = new CreateDoctorService(
-      doctorsRepository,
-      specialtiesRepository,
-      cepProvider,
-    );
+    const createDoctorService = container.resolve(CreateDoctorService);
 
     const doctor = await createDoctorService.execute({
       name,
@@ -48,8 +37,7 @@ class DoctorsController {
       specialty,
     } = request.query as Record<string, string | undefined>;
 
-    const doctorsRepository = new DoctorsRepository();
-    const findDoctorsService = new FindDoctorsService(doctorsRepository);
+    const findDoctorsService = container.resolve(FindDoctorsService);
 
     const doctors = await findDoctorsService.execute({
       name,
@@ -70,8 +58,7 @@ class DoctorsController {
   public async remove(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
-    const doctorsRepository = new DoctorsRepository();
-    const deleteDoctorsService = new DeleteDoctorsService(doctorsRepository);
+    const deleteDoctorsService = container.resolve(DeleteDoctorsService);
 
     await deleteDoctorsService.execute({ id });
     return response.status(204).send();
