@@ -2,7 +2,7 @@ import { AppError } from '@shared/Errors/AppError';
 import { inject, injectable } from 'tsyringe';
 
 import { Doctor } from '../infra/typeorm/entities/Doctor';
-import { FakeCepProvider } from '../providers/CepProvider/fakes/FakeCepProvider';
+import { ICepProvider } from '../providers/CepProvider/models/ICepProvider';
 import { IDoctorsRepository } from '../repositories/IDoctorsRepository';
 import { ISpecialtiesRepository } from '../repositories/ISpecialtyRepository';
 
@@ -25,7 +25,7 @@ class CreateDoctorService {
     private specialtiesRepository: ISpecialtiesRepository,
 
     @inject('CepProvider')
-    private cepProvider: FakeCepProvider,
+    private cepProvider: ICepProvider,
   ) {}
 
   public async execute({
@@ -49,7 +49,7 @@ class CreateDoctorService {
     if (specialties.length < 2)
       throw new AppError('A doctor must have at least 2 specialty');
 
-    if (findSpecialties.length < 2) {
+    if (findSpecialties.length !== specialties.length) {
       const specialtiesNotFound: string[] = [];
 
       specialties.forEach(specialtyId => {

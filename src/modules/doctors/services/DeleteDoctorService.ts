@@ -17,7 +17,7 @@ class DeleteDoctorsService {
   public async execute({ id }: IRequest): Promise<void> {
     const doctor = await this.doctorsRepository.findById(id);
 
-    if (!doctor) throw new AppError('Doctor not found.');
+    if (!doctor) throw new AppError('Doctor not found');
 
     await this.doctorsRepository.softRemove(doctor);
   }

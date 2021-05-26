@@ -8,6 +8,7 @@ interface IDoctorsRepository {
   findByCRM(crm: string): Promise<Doctor | undefined>;
   find(opt: IFindDoctorsDTO): Promise<Doctor[]>;
   softRemove(doctor: Doctor): Promise<void>;
+  save(doctor: Doctor): Promise<Doctor>;
 }
 
 export { IDoctorsRepository };

@@ -1,6 +1,7 @@
 import { CreateDoctorService } from '@modules/doctors/services/CreateDoctorService';
 import { DeleteDoctorsService } from '@modules/doctors/services/DeleteDoctorService';
 import { FindDoctorsService } from '@modules/doctors/services/FindDoctorsService';
+import { UpdateDoctorService } from '@modules/doctors/services/UpdateDoctorService';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -21,6 +22,26 @@ class DoctorsController {
     });
 
     return response.status(201).json(doctor);
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const { name, crm, landline_phone, cell_phone, cep, specialties } =
+      request.body;
+
+    const updateDoctorService = container.resolve(UpdateDoctorService);
+
+    const updatedDoctor = await updateDoctorService.execute({
+      id,
+      name,
+      crm,
+      landline_phone,
+      cell_phone,
+      cep,
+      specialties,
+    });
+
+    return response.json(updatedDoctor);
   }
 
   public async find(request: Request, response: Response): Promise<Response> {

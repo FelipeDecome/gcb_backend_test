@@ -2,8 +2,8 @@ import { ICreateDoctorsDTO } from '@modules/doctors/dtos/ICreateDoctorsDTO';
 import { IFindDoctorsDTO } from '@modules/doctors/dtos/IFindDoctorsDTO';
 import { Doctor } from '@modules/doctors/infra/typeorm/entities/Doctor';
 import { IDoctorsRepository } from '@modules/doctors/repositories/IDoctorsRepository';
+import { removeNullOrUndefinedProperties } from '@shared/utils/removeNullOrUndefinedProperties';
 import { getRepository, Repository } from 'typeorm';
-import { removeNullOrUndefinedProperties } from 'utils/removeNullOrUndefinedProperties';
 
 class DoctorsRepository implements IDoctorsRepository {
   private ormRepository: Repository<Doctor>;
@@ -82,6 +82,10 @@ class DoctorsRepository implements IDoctorsRepository {
 
   public async softRemove(doctor: Doctor): Promise<void> {
     await this.ormRepository.softRemove(doctor);
+  }
+
+  public async save(doctor: Doctor): Promise<Doctor> {
+    return this.ormRepository.save(doctor);
   }
 }
 

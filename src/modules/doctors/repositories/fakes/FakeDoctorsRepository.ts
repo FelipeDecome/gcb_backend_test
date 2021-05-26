@@ -36,6 +36,16 @@ class FakeDoctorsRepository implements IDoctorsRepository {
 
     this.repository[findIndex].removed_at = new Date();
   }
+
+  public async save(doctor: Doctor): Promise<Doctor> {
+    const findIndex = this.repository.findIndex(
+      findDoctor => findDoctor.id === doctor.id,
+    );
+
+    this.repository[findIndex] = doctor;
+
+    return doctor;
+  }
 }
 
 export { FakeDoctorsRepository };
