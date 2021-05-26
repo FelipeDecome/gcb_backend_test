@@ -30,4 +30,14 @@ doctorsRoutes.post(
 
 doctorsRoutes.get('/', doctorsController.find);
 
+doctorsRoutes.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  doctorsController.remove,
+);
+
 export { doctorsRoutes };

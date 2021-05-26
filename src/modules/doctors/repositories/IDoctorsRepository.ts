@@ -4,9 +4,10 @@ import { Doctor } from '../infra/typeorm/entities/Doctor';
 
 interface IDoctorsRepository {
   create(data: ICreateDoctorsDTO): Promise<Doctor>;
+  findById(id: string): Promise<Doctor | undefined>;
   findByCRM(crm: string): Promise<Doctor | undefined>;
   find(opt: IFindDoctorsDTO): Promise<Doctor[]>;
-  // softRemove(): Promise<void>;
+  softRemove(doctor: Doctor): Promise<void>;
 }
 
 export { IDoctorsRepository };

@@ -18,6 +18,10 @@ class DoctorsRepository implements IDoctorsRepository {
     return this.ormRepository.save(doctor);
   }
 
+  public async findById(id: string): Promise<Doctor | undefined> {
+    return this.ormRepository.findOne(id, { relations: ['address'] });
+  }
+
   public async findByCRM(crm: string): Promise<Doctor | undefined> {
     return this.ormRepository.findOne({
       where: { crm },
@@ -74,6 +78,10 @@ class DoctorsRepository implements IDoctorsRepository {
         { ...parsedData, ...parsedAddressData },
       )
       .getMany();
+  }
+
+  public async softRemove(doctor: Doctor): Promise<void> {
+    await this.ormRepository.softRemove(doctor);
   }
 }
 

@@ -17,12 +17,24 @@ class FakeDoctorsRepository implements IDoctorsRepository {
     return doctor;
   }
 
+  public async findById(id: string): Promise<Doctor | undefined> {
+    return this.repository.find(doctor => doctor.id === id);
+  }
+
   public async findByCRM(crm: string): Promise<Doctor | undefined> {
     return this.repository.find(doctor => doctor.crm === crm);
   }
 
   public async find(_: IFindDoctorsDTO): Promise<Doctor[]> {
     return [...this.repository];
+  }
+
+  public async softRemove(doctor: Doctor): Promise<void> {
+    const findIndex = this.repository.findIndex(
+      findDoctor => findDoctor.id === doctor.id,
+    );
+
+    this.repository[findIndex].removed_at = new Date();
   }
 }
 

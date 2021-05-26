@@ -1,5 +1,6 @@
 import { ViaCepCepProvider } from '@modules/doctors/providers/CepProvider/implementations/ViaCepCepProvider';
 import { CreateDoctorService } from '@modules/doctors/services/CreateDoctorService';
+import { DeleteDoctorsService } from '@modules/doctors/services/DeleteDoctorService';
 import { FindDoctorsService } from '@modules/doctors/services/FindDoctorsService';
 import { Request, Response } from 'express';
 
@@ -30,7 +31,7 @@ class DoctorsController {
       specialties,
     });
 
-    return response.json(doctor);
+    return response.status(201).json(doctor);
   }
 
   public async find(request: Request, response: Response): Promise<Response> {
@@ -64,6 +65,16 @@ class DoctorsController {
     });
 
     return response.json(doctors);
+  }
+
+  public async remove(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+
+    const doctorsRepository = new DoctorsRepository();
+    const deleteDoctorsService = new DeleteDoctorsService(doctorsRepository);
+
+    await deleteDoctorsService.execute({ id });
+    return response.status(204).send();
   }
 }
 
